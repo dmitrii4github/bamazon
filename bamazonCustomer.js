@@ -71,6 +71,32 @@ inquirer
                 if (stock_quantity < item_quantity) {
                     con.log("Insufficient quantity!");
                     inquire();
+                } else {
+                    stock_quantity = stock_quantity - item_quantity;
+                    connection.query(
+                        "UPDATE products SET ? WHERE ?",
+                        [
+                          {
+                            stock_quantity: stock_quantity
+                          },
+                          {
+                            item_id: item_id
+                          }
+                        ],
+                        function(error) {
+                          if (error) throw err;
+                          connection.query("SELECT price FROM products WHERE item_id="+item_id, function(err, res) {
+                            if (err) throw err;
+                            console.log("price: "+JSON.stringify(res));
+                            price = res[0]["price"];
+                            console.log("price: "+ price);
+                            console.log("Your order is fulfilled! Total cost is "+price*item_quantity+". Updated stock_quantity.");
+                            inquire();
+                          });
+                          
+                        }
+                      );
+            
                 }
             });
       });
