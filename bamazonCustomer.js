@@ -20,7 +20,7 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
   if (err) throw err;
-  con.warn("connected as id " + connection.threadId + "\n");
+  //con.warn("connected as id " + connection.threadId + "\n");
   inquire();
 
 });
@@ -62,12 +62,12 @@ inquirer
       .then(function(inquirerResponse) {
             con.log("You are requesting " + inquirerResponse.item_quantity + " items.");
             var item_quantity = inquirerResponse.item_quantity;
-            con.log("item_id: "+item_id);
+            //con.log("item_id: "+item_id);
             connection.query("SELECT stock_quantity FROM products WHERE item_id="+item_id, function(err, res) {
                 if (err) throw err;
-                console.log("stock_quantity: "+JSON.stringify(res));
+                //console.log("stock_quantity: "+JSON.stringify(res));
                 stock_quantity = res[0]["stock_quantity"];
-                console.log("stock_quantity: "+stock_quantity);
+                //console.log("stock_quantity: "+stock_quantity);
                 if (stock_quantity < item_quantity) {
                     con.log("Insufficient quantity!");
                     inquire();
@@ -87,9 +87,9 @@ inquirer
                           if (error) throw err;
                           connection.query("SELECT price FROM products WHERE item_id="+item_id, function(err, res) {
                             if (err) throw err;
-                            console.log("price: "+JSON.stringify(res));
+                            //console.log("price: "+JSON.stringify(res));
                             price = res[0]["price"];
-                            console.log("price: "+ price);
+                            //console.log("price: "+ price);
                             console.log("Your order is fulfilled! Total cost is "+price*item_quantity+". Updated stock_quantity.");
                             inquire();
                           });
